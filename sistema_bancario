@@ -1,0 +1,83 @@
+saldo  = 0
+extrato = ""
+limite = 500
+numero_saques = 0
+LIMITE_SAQUES = 3
+
+menu = """
+                MENU        
+    
+    Informe a opção desejada
+    
+    [d] depósito
+    [s] saque
+    [e] extrato
+    [q] encerrar sessão
+    
+ ==>"""
+    
+
+while True:
+    
+    opcao = input(menu)
+
+
+    if opcao == "d":
+        print("DEPÓSITO")
+        valor = float(input("Insira o valor a ser depositado: R$ "))
+
+        if valor > 0:
+            saldo += valor
+            extrato += f"Depósito de R$ {valor:.2f} \n"
+            print (f"Valor de R$ {valor:.2f} depositado. Seu saldo atual é de R$ {saldo:.2f}.")
+        
+        else:
+            print ("Valor inválido. Insira um valor maior que 0.")
+    
+    elif opcao == "s":
+        print("SAQUE")
+        valor = float(input("Insira o valor a ser sacado: R$ "))
+        
+        saldo_excedido = valor > saldo
+        limite_excedido = valor > limite
+        saque_excedido = numero_saques >= LIMITE_SAQUES
+
+        if saque_excedido:
+            print ("Impossível sacar: limite de saques excedido.")
+            print("O usuário não pode efetuar mais saques hoje.")
+
+        elif saldo_excedido:
+            print ("Impossível sacar: saldo insuficiente.")
+        
+        elif limite_excedido:
+            print ("Impossível sacar: valor acima do limite de saque.")
+
+        elif  valor > 0 and valor <= limite and valor <= saldo:
+            print (f"Saque de R$ {valor} efetuado")
+            numero_saques += 1
+            saldo -= valor
+            extrato += f"Saque de R$ {valor:.2f} \n"
+            print (f"Seu saldo é de R$ {saldo:.2f}")
+            
+            if numero_saques <= LIMITE_SAQUES:
+                print (f"Você já sacou {numero_saques} vezes hoje.")
+        
+        else:
+            print ("Erro: impossível realizar o saque. Valor inválido.")
+
+        
+    elif opcao == "e":
+        print("\n========== EXTRATO ===========")
+        print("Não foram realizadas movimentações." if not extrato else extrato)
+        print(f"\n Saldo: R${saldo:.2f}")
+        print("==============================")
+
+    elif opcao == "q":
+       print ("Sessão encerrada.")
+       print ("Obrigado por utilizar nossos serviços.")
+       break
+    
+    else:
+        print("Opção inválida.")
+        print(" Por favor, selecione a operação desejada conforme o menu.")
+    
